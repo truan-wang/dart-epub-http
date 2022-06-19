@@ -16,7 +16,8 @@ An epub reader and writer that can:
   - read/write epub file on remote server throw http
   - read/write a directory as an epub file 
   - read/write an epub file 
-  - read an epub file 
+  - read an epub file in memory
+  - read/write epub file use custom method
 
 ## Features
 

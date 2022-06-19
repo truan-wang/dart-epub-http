@@ -3,6 +3,7 @@
 /// More dartdocs go here.
 library dart_epub_http;
 
-export 'src/dart_epub_http_base.dart';
-
-// TODO: Export any libraries intended for clients of this package.
+export 'src/reader.dart' show EpubReader;
+export 'src/writer.dart' show EpubWriter;
+export 'src/zip_reader.dart' show ZipEpubReader;
+export 'src/epub.dart' show Epub;
