@@ -46,8 +46,7 @@ void main() {
   });
 
   group('epub parser', () {
-    final r =
-        ZipEpubReader(filename: "/Users/truan.wang/Documents/文/柏杨白话版资治通鉴.epub");
+    final r = ZipEpubReader(filename: "/Users/truan.wang/Documents/文/围城.epub");
     final epub = Epub(reader: r);
 
     setUp(() {
@@ -55,7 +54,7 @@ void main() {
     });
 
     test('parse packages:', () async {
-      for (final p in await epub.packages) {
+      for (final p in await epub.renditions) {
         print(p);
       }
     });
