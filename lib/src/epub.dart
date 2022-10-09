@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:dart_epub_http/src/dir_reader.dart';
+import 'package:dart_epub_http/src/http_reader.dart';
 import 'package:xml/xml.dart';
 
 import './reader.dart';
@@ -352,9 +354,9 @@ class Epub {
       reader =
           ZipEpubReader(filename: filename, data: data, password: password);
     } else if (folder != null) {
-      // todo:
+      reader = DirEpubReader(baseDir: folder);
     } else if (url != null) {
-      // todo:
+      reader = HttpEpubReader(baseUri: Uri.parse(url));
     }
     final e = Epub(reader: reader);
     return e;

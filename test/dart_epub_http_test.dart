@@ -1,8 +1,6 @@
 import 'dart:convert';
 
 import 'package:dart_epub_http/dart_epub_http.dart';
-import 'package:dart_epub_http/src/dir_reader.dart';
-import 'package:dart_epub_http/src/http_reader.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -48,8 +46,7 @@ void main() {
   });
 
   group('epub parser', () {
-    final r = ZipEpubReader(filename: "./test/the-art-of-war.epub");
-    final epub = Epub(reader: r);
+    final epub = Epub.open(filename: "./test/the-art-of-war.epub");
 
     setUp(() {
       // Additional setup goes here.
@@ -63,8 +60,7 @@ void main() {
   });
 
   group('dir epub parser', () {
-    final r = DirEpubReader(baseDir: "./test/the-art-of-war");
-    final epub = Epub(reader: r);
+    final epub = Epub.open(folder: "./test/the-art-of-war");
 
     setUp(() {
       // Additional setup goes here.
@@ -78,8 +74,7 @@ void main() {
   });
 
   group('http epub parser', () {
-    final r = HttpEpubReader(baseUri: Uri.parse("https://ebooks.k6-12.com/epub/the-art-of-war"));
-    final epub = Epub(reader: r);
+    final epub = Epub.open(url: "https://ebooks.k6-12.com/epub/the-art-of-war");
 
     setUp(() {
       // Additional setup goes here.

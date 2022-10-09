@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 
 abstract class EpubReader {
   Future<List<String>> listFiles() async {
