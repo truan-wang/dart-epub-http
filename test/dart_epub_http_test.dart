@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dart_epub_http/dart_epub_http.dart';
 import 'package:dart_epub_http/src/dir_reader.dart';
+import 'package:dart_epub_http/src/http_reader.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -63,6 +64,21 @@ void main() {
 
   group('dir epub parser', () {
     final r = DirEpubReader(baseDir: "./test/the-art-of-war");
+    final epub = Epub(reader: r);
+
+    setUp(() {
+      // Additional setup goes here.
+    });
+
+    test('parse packages:', () async {
+      for (final p in await epub.renditions) {
+        print(p);
+      }
+    });
+  });
+
+  group('http epub parser', () {
+    final r = HttpEpubReader(baseUri: Uri.parse("https://ebooks.k6-12.com/epub/the-art-of-war"));
     final epub = Epub(reader: r);
 
     setUp(() {
