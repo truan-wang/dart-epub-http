@@ -6,7 +6,7 @@ import 'package:test/test.dart';
 void main() {
   group('zip epub reader', () {
     final r =
-        ZipEpubReader(filename: "/Users/truan.wang/Documents/文/柏杨白话版资治通鉴.epub");
+        ZipEpubReader(filename: "./test/the-art-of-war.epub");
 
     setUp(() {
       // Additional setup goes here.
@@ -46,7 +46,7 @@ void main() {
   });
 
   group('epub parser', () {
-    final r = ZipEpubReader(filename: "/Users/truan.wang/Documents/文/围城.epub");
+    final r = ZipEpubReader(filename: "./test/the-art-of-war.epub");
     final epub = Epub(reader: r);
 
     setUp(() {
