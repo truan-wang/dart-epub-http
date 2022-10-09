@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns:schema="http://schema.org/" xmlns="http://www.w3.org/2005/Atom" xmlns:thr="http://purl.org/syndication/thread/1.0" xmlns:dcterms="http://purl.org/dc/terms/">
+<title>The Art of War</title>
+<id>http://www.feedbooks.com/book/168</id>
+<author>
+  <name>Sun Tzu</name>
+  <uri>http://www.feedbooks.com/author/59</uri>
+</author>
+<published>2007-01-07T20:34:08Z</published>
+<updated>2017-04-04T12:11:37Z</updated>
+<dcterms:language>en</dcterms:language>
+<dcterms:issued>-514</dcterms:issued>
+<category term="FBNFC000000" label="Non-Fiction" scheme="http://www.feedbooks.com/categories"/>
+<category term="FSHUM000000N" label="Human Science" scheme="http://www.feedbooks.com/categories"/>
+<category term="FBPHI000000" label="Philosophy" scheme="http://www.feedbooks.com/categories"/>
+<summary>The Art of War is a Chinese military treatise that was written during the 6th century BC by Sun Tzu. Composed of 13 chapters, each of which is devoted to one aspect of warfare, it has long been praised as the definitive work on military strategies...</summary>
+<dcterms:extent>11,450 words</dcterms:extent>
+<dcterms:source>http://www.paxlibrorum.com/</dcterms:source>
+<link type="text/html" title="View on Feedbooks" rel="alternate" href="http://generation.feedbooks.com/book/168"/>
+<link type="application/epub+zip" rel="http://opds-spec.org/acquisition" href="http://generation.feedbooks.com/book/168.epub"/>
+<link type="application/x-mobipocket-ebook" rel="http://opds-spec.org/acquisition" href="http://generation.feedbooks.com/book/168.mobi"/>
+<link type="application/pdf" rel="http://opds-spec.org/acquisition" href="http://generation.feedbooks.com/book/168.pdf"/>
+<link type="image/jpeg" rel="http://opds-spec.org/image" href="http://covers.feedbooks.net/book/168.jpg?size=large&amp;t=1491307897"/>
+<link type="image/jpeg" rel="http://opds-spec.org/image/thumbnail" href="http://covers.feedbooks.net/book/168.jpg?t=1491307897"/>
+<link type="application/atom+xml;profile=opds-catalog;kind=acquisition" title="From the same author" rel="http://www.feedbooks.com/opds/same_author" href="http://generation.feedbooks.com/author/59/books/top.atom?lang=en"/>
+<link type="application/atom+xml;profile=opds-catalog;kind=navigation" title="Categories for this book" rel="related" href="http://generation.feedbooks.com/book/168/categories.atom"/>
+<link type="application/atom+xml;profile=opds-catalog;kind=navigation" title="Reading lists for this book" rel="related" href="http://generation.feedbooks.com/book/168/lists.atom"/>
+<link type="application/atom+xml" title="Comments for this book (7)" rel="replies" thr:count="7" thr:updated="2016-09-20T14:18:36Z" href="http://generation.feedbooks.com/book/168/comments.atom"/>
+<link type="text/html" title="Comments for this book (7)" rel="replies" thr:count="7" thr:updated="2016-09-20T14:18:36Z" href="http://generation.feedbooks.com/book/168/comments"/>
+<content type="html">&lt;p&gt;The Art of War is a Chinese military treatise that was written during the 6th century BC by Sun Tzu. Composed of 13 chapters, each of which is devoted to one aspect of warfare, it has long been praised as the definitive work on military strategies and tactics of its time.
+&lt;br /&gt;The Art of War is one of the oldest books on military strategy in the world. It is the first and one of the most successful works on strategy and has had a huge influence on Eastern and Western military thinking, business tactics, and beyond. Sun Tzu was the first to recognize the importance of positioning in strategy and that position is affected both by objective conditions in the physical environment and the subjective opinions of competitive actors in that environment. He taught that strategy was not planning in the sense of working through a to-do list, but rather that it requires quick and appropriate responses to changing conditions. Planning works in a controlled environment, but in a competitive environment,&lt;/p&gt;</content>
+<link type="application/atom+xml;type=entry;profile=opds-catalog" rel="self" href="http://generation.feedbooks.com/book/168.atom"/>
+  <link type="application/atom+xml" rel="contents" href="http://generation.feedbooks.com/book/168/contents.atom"/>
+</entry>

@@ -1,12 +1,13 @@
 import 'dart:convert';
 
 import 'package:dart_epub_http/dart_epub_http.dart';
+import 'package:dart_epub_http/src/dir_reader.dart';
 import 'package:test/test.dart';
 
 void main() {
   group('zip epub reader', () {
     final r =
-        ZipEpubReader(filename: "./test/the-art-of-war.epub");
+        ZipEpubReader(filename: "./test/the-art-of-war.zip");
 
     setUp(() {
       // Additional setup goes here.
@@ -47,6 +48,21 @@ void main() {
 
   group('epub parser', () {
     final r = ZipEpubReader(filename: "./test/the-art-of-war.epub");
+    final epub = Epub(reader: r);
+
+    setUp(() {
+      // Additional setup goes here.
+    });
+
+    test('parse packages:', () async {
+      for (final p in await epub.renditions) {
+        print(p);
+      }
+    });
+  });
+
+  group('dir epub parser', () {
+    final r = DirEpubReader(baseDir: "./test/the-art-of-war");
     final epub = Epub(reader: r);
 
     setUp(() {

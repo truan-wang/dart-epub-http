@@ -6,4 +6,10 @@ class HttpEpubWriter extends EpubWriter {
     // TODO: implement writeFile
     throw UnimplementedError();
   }
+  
+  @override
+  Future<void> removeFile(String fullPath) {
+    // TODO: implement removeFile
+    throw UnimplementedError();
+  }
 }

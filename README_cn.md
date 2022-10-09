@@ -97,6 +97,7 @@ content.opf的示例格式如下：
 
 1. 添加一个文件到包
 2. 删除包里一个文件（可选的）
+3. 删除包里没有使用到的所有文件（可选的）
 
 我们可以根据需要实现一些服务通过http/websocket/rpc/... 协议来提供这些接口。
 
@@ -116,7 +117,6 @@ Future<void> removeFile(String fullPath) async {}
 }
 
 class ZipEpubReader extends EpubReader {}
-class ZipEpubWriter extends EpubWriter {}
 
 class DirEpubReader extends EpubReader {}
 class DirEpubWriter extends EpubWriter {}
@@ -125,11 +125,11 @@ class HttpEpubReader extends EpubReader {}
 class HttpEpubWriter extends EpubWriter {}
 
 class Epub{
-EpubReader? _reader;
-EpubWriter? _writer;
+EpubReader? reader;
+EpubWriter? writer;
 
-Epub();
-Epub.open({String? filename, String? folder, Uint8list? data, String? url, bool readonly=true});
+Epub({this.reader, this.writer});
+static Epub open({String? filename, String? folder, Uint8list? fileData, String? url, bool readonly=true});
 
 }
 ```
