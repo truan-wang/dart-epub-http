@@ -18,13 +18,13 @@ void main() {
       }
     });
     test('get file mimetype:', () async {
-      print(Utf8Decoder().convert(await r.getFile("mimetype")));
+      print(Utf8Decoder().convert(await r.readFile("mimetype")));
     });
     test('get file container.xml:', () async {
-      print(Utf8Decoder().convert(await r.getFile("META-INF/container.xml")));
+      print(Utf8Decoder().convert(await r.readFile("META-INF/container.xml")));
     });
     test('get file not exists:', () async {
-      print(Utf8Decoder().convert(await r.getFile("META-INF/not-exists.xml")));
+      print(Utf8Decoder().convert(await r.readFile("META-INF/not-exists.xml")));
     });
   });
 
@@ -41,7 +41,7 @@ void main() {
       }
     });
     test('get file not exists:', () async {
-      print(Utf8Decoder().convert(await r.getFile("META-INF/not-exists.xml")));
+      print(Utf8Decoder().convert(await r.readFile("META-INF/not-exists.xml")));
     });
   });
 

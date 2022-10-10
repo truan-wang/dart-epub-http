@@ -1,44 +1,46 @@
-<!-- 
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
-
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages). 
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages). 
--->
-
 # dart-epub-http
-An epub reader and writer that can:
-  - read/write epub file on remote server throw http
-  - read/write a directory as an epub file 
-  - read/write an epub file 
-  - read an epub file in memory
-  - read/write epub file use custom method
+An epub parser and saver(todo) use customable read write file methods.
 
 ## Features
+  - parse from an epub file or file data in memory
+  - parse from web server
+  - parse from a directory 
+  - save to a directory 
+  - parse epub file use custom get file method
+  - save epub file use custom write file method
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
 
-## Getting started
-
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
-
-## Usage
-
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder. 
+## Example
 
 ```dart
-const like = 'sample';
+import 'dart:convert';
+
+import 'package:dart_epub_http/dart_epub_http.dart';
+
+void main() async{
+
+  var f = Epub.open(filename: "./test/the-art-of-war.epub");
+  // f = Epub.open(folder: "./test/the-art-of-war");
+  // f = Epub.open(url: "https://ebooks.k6-12.com/epub/the-art-of-war");
+
+  final r = await f.rendition;
+  final m = r!.metadata;
+  print(m.title);
+  print(m.creator);
+  for (var k in m.metas.keys){
+    print("$k = ${m.metas[k]}");
+  }
+
+  for (var id in r.spine.items) {
+    final fullPath = r.getFullPath(id)!;
+    print(Utf8Decoder().convert(await f.readFile(fullPath)));
+  }
+
+}
 ```
+
+ Add more examples to `/example` folder. 
 
 ## Additional information
 
-TODO: Tell users more about the package: where to find more information, how to 
-contribute to the package, how to file issues, what response they can expect 
-from the package authors, and more.
+An epub reader is under development using flutter and this package.

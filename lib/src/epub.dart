@@ -1,23 +1,34 @@
+//
+// Copyright 2022 truan.wang.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
 import 'dart:convert';
-import 'package:dart_epub_http/src/dir_reader.dart';
-import 'package:dart_epub_http/src/http_reader.dart';
+import 'package:path/path.dart' as p;
 import 'package:xml/xml.dart';
 
-import './reader.dart';
-import './zip_reader.dart';
-import './writer.dart';
+import 'reader.dart';
+import 'zip_reader.dart';
+import 'dir_reader.dart';
+import 'http_reader.dart';
+import 'writer.dart';
+//import 'dir_writer.dart';
 
 const mimetypeContent = "application/epub+zip";
 const containerPath = "META-INF/container.xml";
 
-String getBaseDir(String path) {
-  int i = path.lastIndexOf("/");
-  if (i == -1) {
-    return "";
-  }
-  return path.substring(0, i);
-}
-
+/// media-type 
 enum MediaType {
   unknown,
   xml,
@@ -82,39 +93,40 @@ enum MediaType {
   }
 }
 
+/// metadata 
 class Metadata {
-  // dc namespaces
+  /// dc namespaces
   List<String> identifiers = [];
   List<String> titles = [];
   List<String> languages = [];
-  // first identifer
+  /// first identifer
   String get identifier => identifiers.isNotEmpty ? identifiers.first : "";
-  // first title
+  /// first title
   String get title => titles.isNotEmpty ? titles.first : "";
-  // first language
+  /// first language
   String get language => languages.isNotEmpty ? languages.first : "";
 
-  // The dc:contributor element [dcterms] is used to represent the name of a person, organization, etc. that played a secondary role in the creation of the content.
+  /// The dc:contributor element [dcterms] is used to represent the name of a person, organization, etc. that played a secondary role in the creation of the content.
   String? contributor;
-  // The dc:creator element [dcterms] represents the name of a person, organization, etc. responsible for the creation of the content. EPUB creators MAY associate a role property with the element to indicate the function the creator played.
+  /// The dc:creator element [dcterms] represents the name of a person, organization, etc. responsible for the creation of the content. EPUB creators MAY associate a role property with the element to indicate the function the creator played.
   String? creator;
-  // The dc:date element [dcterms] defines the publication date of the EPUB publication. The publication date is not the same as the last modified date (the last time the EPUB creator changed the EPUB publication).
+  /// The dc:date element [dcterms] defines the publication date of the EPUB publication. The publication date is not the same as the last modified date (the last time the EPUB creator changed the EPUB publication).
   String? date;
-  // The dc:subject element [dcterms] identifies the subject of the EPUB publication.
+  /// The dc:subject element [dcterms] identifies the subject of the EPUB publication.
   String? subject;
-  // The dc:type element [dcterms] is used to indicate that the EPUB publication is of a specialized type (e.g., annotations or a dictionary packaged in EPUB format).
+  /// The dc:type element [dcterms] is used to indicate that the EPUB publication is of a specialized type (e.g., annotations or a dictionary packaged in EPUB format).
   String? type;
-  // publish by
+  /// publish by
   String? publisher;
-  // copyrights info
+  /// copyrights info
   String? rights;
 
-  // epubs 3.0 use meta.property : meta.text()
-  // epubs 2.0 use meta.name : meta.content
+  /// epubs 3.0 use meta.property : meta.text()
+  /// epubs 2.0 use meta.name : meta.content
   Map<String, String> metas = {};
 
-  // last modified date
-  // meta property=dectems:modified
+  /// last modified date
+  /// meta property=dectems:modified
   DateTime? lastModified;
 
   Metadata();
@@ -162,13 +174,14 @@ class Metadata {
           m.metas[k] = v;
         }
       } else {
-        print(n.name.toString());
+        print(n.name.toString()); // TODO: 
       }
     });
     return m;
   }
 }
 
+/// a resource item in epub
 class ResourceItem {
   final String id;
   final String href;
@@ -186,6 +199,7 @@ class ResourceItem {
       this.mediaOverlay});
 }
 
+/// manifest, all resource items in epub should be defined is manifest
 class Manifest {
   final Map<String, ResourceItem> items = {};
 
@@ -208,11 +222,12 @@ class Manifest {
   }
 }
 
+/// define liner read order of an epub file
 class Spine {
   String? id;
-  // The NCX [opf-201] is a legacy feature that previously provided the table of contents.
+  /// The NCX [opf-201] is a legacy feature that previously provided the table of contents.
   String? toc;
-  // The page-progression-direction attribute sets the global direction in which the content flows. Allowed values are ltr (left-to-right), rtl (right-to-left) and default. When EPUB creators specify the default value, they are expressing no preference and the reading system can choose the rendering direction.
+  /// The page-progression-direction attribute sets the global direction in which the content flows. Allowed values are ltr (left-to-right), rtl (right-to-left) and default. When EPUB creators specify the default value, they are expressing no preference and the reading system can choose the rendering direction.
   String? pageProgressionDirection;
 
   List<String> items = [];
@@ -234,52 +249,62 @@ class Spine {
   }
 }
 
+/// describe one way to read an epub file.
+/// an epub file may have muliple renditions
 class Rendition {
-  // rootfile element attributes
+  /// rootfile element attributes
   String fullPath;
-  // all resource under the baseDir
-  String get baseDir => getBaseDir(fullPath);
 
-  // default and not change able
+  /// all resource under the baseDir
+  String get baseDir {
+    int i = fullPath.lastIndexOf("/");
+    if (i == -1) {
+      return "";
+    }
+    return fullPath.substring(0, i);
+  }
+
+  /// default and not change able
   final MediaType mediaType = MediaType.oebps;
 
-  // rootfile attributes, namespace: http://www.idpf.org/2013/rendition
-  // A CSS 3 media query [mediaqueries], where the media type, if specified, MUST only be the value "all".
+  /// rootfile attributes, namespace: http://www.idpf.org/2013/rendition
+  /// A CSS 3 media query [mediaqueries], where the media type, if specified, MUST only be the value "all".
   String? media;
-  // The value of the attribute MUST be reflowable or pre-paginated.
+  /// The value of the attribute MUST be reflowable or pre-paginated.
   String? layout;
-  // MUST contain a valid language code conforming to [rfc5646]
+  /// MUST contain a valid language code conforming to [rfc5646]
   String? language;
-  // MUST be one or more of the values: auditory, tactile, textual or visual
+  /// MUST be one or more of the values: auditory, tactile, textual or visual
   String? accessMode;
-  // name for manual rendition selection
+  /// name for manual rendition selection
   String? label;
 
-  // package element attributes
-  // support 2.0, 3.0, default 3.0
+  /// package element attributes
+  /// support 2.0, 3.0, default 3.0
   String version;
-  // id of element which hold real unique identifier, default bookid
+  /// id of element which hold real unique identifier, default bookid
   String uniqueIdentifier;
-  // useless
+  /// useless
   String? id;
-  // reading direction, allowed values are: ltr, rtl, auto
+  /// reading direction, allowed values are: ltr, rtl, auto
   String? dir;
-  // todo:
+  /// todo:
   String? prefix;
-  //  MUST be a well-formed language tag [bcp47]
+  ///  MUST be a well-formed language tag [bcp47]
   String? xmlLang;
 
-  // The metadata element encapsulates meta information
+  /// The metadata element encapsulates meta information
   Metadata metadata = Metadata();
 
-  //The manifest element provides an exhaustive list of publication resources used in the rendering of the content
+  /// The manifest element provides an exhaustive list of publication resources used in the rendering of the content
   Manifest manifest = Manifest();
 
-  // The spine element defines an ordered list of manifest item references that represent the default reading order
+  /// The spine element defines an ordered list of manifest item references that represent the default reading order
   Spine spine = Spine();
 
-  // todo: guide
-  // todo: collection
+  /// todo: guide
+
+  /// todo: collection
 
   Rendition({
     this.fullPath = "content.opf",
@@ -338,13 +363,29 @@ class Rendition {
     label = rootfile.getAttribute("label",
         namespace: "http://www.idpf.org/2013/rendition");
   }
+
+  /// get full path of the resource item with id [id]
+  String? getFullPath(String id) {
+    final href = manifest.items[id]?.href;
+    if (href != null) {
+      return p.join(baseDir, href);
+    }
+    return null;
+  }
+
 }
 
+/// an .epub package
 class Epub {
   Epub({this.reader, this.writer});
 
+  /// Open an epub file for readonly.
+  /// If filename [filename] or data [data] is not null, build a ZipEpubReader use filename or data;
+  /// If folder [folder] is not null, build a DirEpubReader use the folder;
+  /// If url [url] is not null, build a HttpEpubReader use the url.
   static Epub open(
-      {String? filename,
+      {
+      String? filename,
       List<int>? data,
       String? password,
       String? folder,
@@ -362,15 +403,19 @@ class Epub {
     return e;
   }
 
+  /// define how to read a file in the epub package.
   EpubReader? reader;
+
+  /// define how to write a file to the epub package.
   EpubWriter? writer;
 
+  /// get all renditions of the epub package.
   Future<List<Rendition>> get renditions async {
     List<Rendition> result = [];
     for (final rootfile in await getRootFiles()) {
       final rootfileFullPath = rootfile.getAttribute("full-path")!;
       final content =
-          Utf8Decoder().convert(await reader!.getFile(rootfileFullPath));
+          Utf8Decoder().convert(await reader!.readFile(rootfileFullPath));
 
       final r = Rendition();
 
@@ -381,15 +426,18 @@ class Epub {
     return result;
   }
 
+  /// get first rendition of the epub package.
+  /// most epub package have only one rendition.
   Future<Rendition?> get rendition async {
     final ps = await renditions;
     return ps.isEmpty ? null : ps[0];
   }
 
+  /// an rootfile define a rendition of the epub package.
   Future<List<XmlNode>> getRootFiles() async {
     assert(reader != null);
 
-    final content = Utf8Decoder().convert(await reader!.getFile(containerPath));
+    final content = Utf8Decoder().convert(await reader!.readFile(containerPath));
     final document = XmlDocument.parse(content);
     final container = document.getElement("container",
         namespace: "urn:oasis:names:tc:opendocument:xmlns:container");
@@ -402,4 +450,8 @@ class Epub {
     }
     return [];
   }
+
+  /// read a file in the epub package.
+  Future<List<int>> readFile(String fullPath) => reader!.readFile(fullPath);
+  
 }
